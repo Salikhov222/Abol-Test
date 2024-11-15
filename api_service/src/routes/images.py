@@ -5,7 +5,7 @@ from datetime import datetime
 from PIL import Image as pilImage
 from fastapi import APIRouter, UploadFile
 from fixtures import data as fixtures_images
-from src.models.images import Image
+from src.schemas.images import Image
 
 
 router = APIRouter(prefix="/images", tags=["images"])

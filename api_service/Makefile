@@ -4,7 +4,7 @@ HOST ?= 0.0.0.0
 PORT ?= 8000
 
 run:	# Run the application using uvicorn with provided arguments or defaults
-	uvicorn main:app --host  ${HOST} --port ${PORT} --reload
+	uvicorn main:app --host  ${HOST} --port ${PORT} --reload --env-file .env
 
 help:	# Show this help message
 	@echo "Usage: make [command]"
