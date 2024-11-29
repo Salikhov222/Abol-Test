@@ -1,7 +1,7 @@
 from typing import Optional
 
 from datetime import date
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class Image(BaseModel):
@@ -11,3 +11,5 @@ class Image(BaseModel):
     upload_date: date
     resolution: str
     size: int
+
+    model_config = ConfigDict(from_attributes=True)

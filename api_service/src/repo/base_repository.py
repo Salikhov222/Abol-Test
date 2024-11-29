@@ -1,10 +1,9 @@
 from typing import Generic, TypeVar, Type, Optional, List
 
-from sqlalchemy import select, delete
+from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.base import Base
-from src.schemas.image import Image
 
 
 ModelType = TypeVar('ModelType', bound=Base)    # объявление переменной типа, привязанной к базовой модели Base
@@ -37,11 +36,18 @@ class BaseRepository(Generic[ModelType]):   # Generic - обобщенный т�
         await self.session.refresh(obj)
         return obj
         
-    async def update(self, obj: ModelType) -> ModelType:
+    async def update(self, obj_id: int, update_data: dict) -> ModelType:
         """Обновление объекта"""
-
-        await self.session.commit()
-        await self.session.refresh()
+        query = (
+            update(self.model)
+            .where(self.model.id == obj_id)
+            .values(**update_data)
+            .returning(self.model)
+        )
+        result = await self.session.execute(query)
+        obj = result.scalars().first()
+        if obj:
+            await self.session.commit()
         return obj
 
     async def delete(self, obj_id: int) -> None:

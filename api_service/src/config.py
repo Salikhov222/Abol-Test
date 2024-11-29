@@ -10,7 +10,7 @@ class PostgresSettings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_PORT: int = 5432 
 
-    model_config = SettingsConfigDict(env_file='.env')
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
 
     @computed_field
     @property
@@ -44,5 +44,18 @@ class PostgresSettings(BaseSettings):
             path=self.POSTGRES_DB
         )
 
+class RedisSettings(BaseSettings):
+
+    REDIS_HOST: str
+    REDIS_PORT: int = 6379
+    REDIS_DB: int
+
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+
+    @property
+    def get_redis_url(self):
+        return f'redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}'
+
 db_settings = PostgresSettings()
+redis_settings = RedisSettings()
 
