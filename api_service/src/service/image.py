@@ -2,13 +2,12 @@ from dataclasses import dataclass
 
 import aiofiles
 import os
-from redis.exceptions import RedisError
 from datetime import datetime
 from PIL import Image as pilImage
 from fastapi import UploadFile
 
 from src.repo import ImageRepository, RedisCacheRepository
-from src.schemas.image import Image
+from src.schema.image import Image
 
 
 @dataclass

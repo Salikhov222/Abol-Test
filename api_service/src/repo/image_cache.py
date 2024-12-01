@@ -2,7 +2,7 @@ import json
 from redis.asyncio import Redis
 from redis.exceptions import RedisError
 
-from src.schemas.image import Image
+from src.schema.image import Image
 from src.repo import BaseCacheRepository
 from src.exceptions import CacheError
 

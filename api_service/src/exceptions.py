@@ -5,3 +5,9 @@ class ImageNotFoundError(Exception):
 class CacheError(Exception):
     """Исключение для ошибок работы с кэшем"""
     pass
+
+class UserNotFound(Exception):
+    detail = 'User not found'
+
+class UserNotCorrectPassword(Exception):
+    detail = 'User not correct password'

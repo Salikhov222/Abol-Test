@@ -1,9 +1,8 @@
 from typing import Annotated
 
 from fastapi import APIRouter, UploadFile, Depends, HTTPException, status
-from fastapi.responses import JSONResponse
 
-from src.schemas.image import Image
+from src.schema.image import Image
 from src.dependency import get_image_service
 from src.service import ImageService
 from src.exceptions import ImageNotFoundError, CacheError
@@ -29,7 +28,7 @@ async def get_all_images(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Ошибка получения изображений"
+            detail=f"Ошибка получения изображений: {str(e)}"
         )
 
 @router.get(
