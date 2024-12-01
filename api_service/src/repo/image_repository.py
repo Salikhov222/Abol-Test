@@ -1,6 +1,6 @@
 from src.repo import BaseRepository
-from src.database.models import Image as db_Image
-from src.schemas.image import Image
+from src.models import Image as db_Image
+from src.schema.image import Image
 from src.exceptions import ImageNotFoundError
 
 
@@ -16,7 +16,6 @@ class ImageRepository(BaseRepository[db_Image]):
     
     async def add_image(self, image_data: Image) -> db_Image:
         """Добавление нового изображения"""
-        
         
         image_db = db_Image(**image_data.model_dump())
         return await self.add(image_db)
