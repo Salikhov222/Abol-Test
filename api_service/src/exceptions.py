@@ -5,10 +5,10 @@ class CacheError(Exception):
     pass
 
 class UserNotFound(Exception):
-    detail = 'User not found'
+    pass
 
 class UserNotCorrectPassword(Exception):
-    detail = 'User not correct password'
+    pass
 
 class TokenExpired(Exception):
     pass
