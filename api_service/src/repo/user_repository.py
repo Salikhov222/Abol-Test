@@ -2,14 +2,14 @@ from sqlalchemy import insert, select
 
 from src.repo import BaseRepository
 from src.models.user import UserProfile as db_User
-from src.schema import UserLogin
+
 
 class UserRepository(BaseRepository[db_User]):
 
     async def create_user(self, username: str, password: str) -> db_User:
         query = insert(db_User).values(
             username=username, 
-            password=password
+            hashing_password=password
         ).returning(db_User.id)
         result = await self.session.execute(query)
         user_id = result.scalar()

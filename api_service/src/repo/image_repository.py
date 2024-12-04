@@ -13,9 +13,10 @@ class ImageRepository(BaseRepository[db_Image]):
 
         query = select(self.model).where(self.model.id == image_id, self.model.user_id == user_id)
         image = await self.session.execute(query)
+        image = image.scalar_one_or_none()
         if not image:
             raise ImageNotFoundError(f'Изображение с ID {image_id} не найдено')
-        return image.scalar_one_or_none()
+        return image
     
     async def get_all_images_by_user_id(self, user_id: int) -> list[db_Image]:
         """Получение всех изображений пользователя"""

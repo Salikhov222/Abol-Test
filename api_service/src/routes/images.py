@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, UploadFile, Depends, HTTPException, status
 
 from src.schema.image import Image
-from src.dependency import get_image_service, get_request_user_id
+from src.dependency import get_image_service, get_current_user_id
 from src.service import ImageService
 from src.exceptions import ImageNotFoundError, CacheError
 
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/images", tags=["images"])
 )
 async def get_all_images(
     image_service: Annotated[ImageService, Depends(get_image_service)],
-    user_id: int = Depends(get_request_user_id)
+    user_id: int = Depends(get_current_user_id)
 ) -> list[Image]:
     """Получение информации о всех изображениях""" 
     try:
@@ -39,7 +39,7 @@ async def get_all_images(
 async def get_image(
     image_id: int,
     image_service: Annotated[ImageService, Depends(get_image_service)],
-    user_id: int = Depends(get_request_user_id)
+    user_id: int = Depends(get_current_user_id)
 ) -> Image:
     """Получение информации об определенном изображении"""
     try:
@@ -58,7 +58,7 @@ async def get_image(
 async def upload_image(
     file: UploadFile,
     image_service: Annotated[ImageService, Depends(get_image_service)],
-    user_id: int = Depends(get_request_user_id) 
+    user_id: int = Depends(get_current_user_id) 
 ) -> Image:
     """Загрузка нового изображения"""
     try:
@@ -82,7 +82,7 @@ async def update_image(
     image_id: int, 
     title: str, 
     image_service: Annotated[ImageService, Depends(get_image_service)],
-    user_id: int = Depends(get_request_user_id)
+    user_id: int = Depends(get_current_user_id)
 ) -> Image:
     """Обновление названия изображения"""
     try:
@@ -101,7 +101,7 @@ async def update_image(
 async def delete_image(
     image_id: int, 
     image_service: Annotated[ImageService, Depends(get_image_service)],
-    user_id: int = Depends(get_request_user_id)
+    user_id: int = Depends(get_current_user_id)
 ):
     """Удаление конкретного изображения"""  
     try:
