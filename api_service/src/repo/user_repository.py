@@ -6,11 +6,10 @@ from src.schema import UserLogin
 
 class UserRepository(BaseRepository[db_User]):
 
-    async def create_user(self, username: str, password: str, access_token: str) -> db_User:
+    async def create_user(self, username: str, password: str) -> db_User:
         query = insert(db_User).values(
             username=username, 
-            password=password, 
-            access_token=access_token
+            password=password
         ).returning(db_User.id)
         result = await self.session.execute(query)
         user_id = result.scalar()

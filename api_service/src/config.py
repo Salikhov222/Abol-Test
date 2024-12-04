@@ -2,6 +2,13 @@ from pydantic import PostgresDsn, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+class Settings(BaseSettings):
+
+    JWT_SECRET_KEY: str = 'secret_key'
+    JWT_ENCODE_ALGORITHM: str = 'HS256'
+
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+
 class PostgresSettings(BaseSettings):
 
     POSTGRES_USER: str
@@ -56,6 +63,7 @@ class RedisSettings(BaseSettings):
     def get_redis_url(self):
         return f'redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}'
 
+app_settings = Settings()
 db_settings = PostgresSettings()
 redis_settings = RedisSettings()
 

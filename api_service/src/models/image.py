@@ -1,4 +1,4 @@
-from sqlalchemy import String, Date, Integer
+from sqlalchemy import String, Date, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from src.database.base import Base
 
@@ -11,3 +11,4 @@ class Image(Base):
     upload_date: Mapped[Date] = mapped_column(Date, nullable=False)
     resolution: Mapped[str] = mapped_column(String)
     size: Mapped[int] = mapped_column(Integer)
+    user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'), nullable=False)
