@@ -7,8 +7,17 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = 'secret_key'
     JWT_ENCODE_ALGORITHM: str = 'HS256'
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    GOOGLE_CLIENT_ID: str = ''
+    GOOGLE_CLIENT_SECRET: str = ''
+    GOOGLE_REDIRECT_URI: str = ''
+    GOOGLE_TOKEN_URL: str = 'https://accounts.google.com/o/oauth2/token'
 
     model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+
+    @property
+    def google_redirect_url(self) -> str:
+        return f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={self.GOOGLE_CLIENT_ID}&redirect_uri={self.GOOGLE_REDIRECT_URI}&scope=openid%20profile%20email&access_type=offline"
+        
 
 class PostgresSettings(BaseSettings):
 

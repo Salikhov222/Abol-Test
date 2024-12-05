@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
 from src.schema import Token
@@ -24,11 +25,33 @@ async def login(
     except UserNotFound as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"}
         )
     except UserNotCorrectPassword as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"}
         )
     
+@router.get(
+    '/login/google',
+    response_class=RedirectResponse
+)
+async def google_login(
+    auth_service: Annotated[AuthService, Depends(get_auth_service)]
+) -> RedirectResponse:
+    
+    google_auth_url = await auth_service.get_google_redirect_url()
+    print(google_auth_url)
+    return RedirectResponse(url=google_auth_url)
+
+@router.get(
+    '/callback'
+)
+async def google_auth_callback(
+    auth_service: Annotated[AuthService, Depends(get_auth_service)],
+    code: str
+):
+    return auth_service.google_auth(code=code)

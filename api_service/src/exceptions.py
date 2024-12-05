@@ -10,8 +10,8 @@ class UserNotFound(Exception):
 class UserNotCorrectPassword(Exception):
     pass
 
-class TokenExpired(Exception):
+class TokenNotCorrect(Exception):
     pass
 
-class TokenNotCorrect(Exception):
+class UserExistsError(Exception):
     pass
