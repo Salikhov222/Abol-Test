@@ -7,8 +7,14 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = 'secret_key'
     JWT_ENCODE_ALGORITHM: str = 'HS256'
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-
+    YANDEX_CLIENT_ID: str = ''
+    YANDEX_CLIENT_SECRET: str = ''
+    YANDEX_TOKEN_URL: str = 'https://oauth.yandex.ru/token'
+    
     model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+
+    def build_yandex_auth_url(self, redirect_uri: str) -> str:
+        return f"https://oauth.yandex.ru/authorize?response_type=code&client_id={self.YANDEX_CLIENT_ID}&redirect_uri={redirect_uri}"
 
 class PostgresSettings(BaseSettings):
 

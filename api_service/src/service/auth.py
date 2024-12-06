@@ -8,8 +8,9 @@ from src.schema import Token
 from src.repo import UserRepository
 from src.models import UserProfile
 from src.config import Settings
-from src.exceptions import TokenNotCorrect, UserNotFound, UserNotCorrectPassword, TokenExpired
+from src.exceptions import TokenNotCorrect, UserNotFound, UserNotCorrectPassword
 from src.service.password_service import PasswordService
+from src.client import YandexClient
 
 
 @dataclass
@@ -17,6 +18,7 @@ class AuthService:
     user_repository: UserRepository
     settings: Settings
     password_service: PasswordService
+    yandex_client: YandexClient
 
 
     async def login(self, username: str, password: str) -> Token:
@@ -45,3 +47,10 @@ class AuthService:
         except JWTError as e:
             raise TokenNotCorrect('Нет токена авторизации или время жизни токена истекло')
         return payload['user_id']
+    
+    async def yandex_auth(self, code: str):
+        user_data = self.yandex_client.get_user_info(code=code)
+        print(user_data)
+
+    async def get_yandex_redirect_url(self, redirect_uri: str) -> str:
+        return self.settings.build_yandex_auth_url(redirect_uri=redirect_uri) 

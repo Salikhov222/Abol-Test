@@ -13,6 +13,7 @@ from src.cache import get_redis_connection
 from src.service import ImageService, UserService, AuthService, PasswordService
 from src.exceptions import TokenExpired, TokenNotCorrect
 from src.config import app_settings
+from src.client import YandexClient
 
 
 def get_db_repo(
@@ -63,11 +64,20 @@ def get_image_service(
 def get_password_service() -> PasswordService:
     return PasswordService()
 
+def get_yandex_client() -> YandexClient:
+    return YandexClient(settings=app_settings)
+
 def get_auth_service(
     user_repository: UserRepository = Depends(get_db_repo(UserProfile, UserRepository)),
-    password_service: PasswordService = Depends(get_password_service)
+    password_service: PasswordService = Depends(get_password_service),
+    yandex_client: YandexClient = Depends(get_yandex_client)
 ) -> AuthService:
-    return AuthService(user_repository=user_repository, settings=app_settings, password_service=password_service)
+    return AuthService(
+        user_repository=user_repository,
+        settings=app_settings, 
+        password_service=password_service,
+        yandex_client=yandex_client
+    )
 
 def get_user_service(
     user_repository: UserRepository = Depends(get_db_repo(UserProfile, UserRepository)),
